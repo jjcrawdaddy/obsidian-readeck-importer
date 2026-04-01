@@ -333,14 +333,4 @@ export class BookmarksService {
 		}
 	}
 
-	private async deleteFolder(id: string, path:string, showNotice: boolean = false) {
-		const folder = this.app.vault.getAbstractFileByPath(path);
-
-		if (folder && folder instanceof TFolder) {
-			await this.app.vault.delete(folder, true);
-			if (showNotice) { new Notice(`Readeck importer: Deleting bookmark ${id}`); }
-		} else if (!folder) {
-			if (showNotice) { new Notice(`Readeck importer: Error deleting bookmark ${id}`); }
-		}
-	}
 }
