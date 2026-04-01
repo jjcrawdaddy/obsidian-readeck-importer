@@ -158,8 +158,20 @@ export class BookmarksService {
 		if (this.settings.delete) {
 			const toDeleteIds = bookmarksStatus.filter(b => b.type === 'delete').map(b => b.id);
 			for (const id of toDeleteIds) {
-				const bookmarkFolderPath = `${this.settings.folder}/${id}`;
-				await this.deleteFolder(id, bookmarkFolderPath, true);
+				// Delete the markdown note (find by readeck_id)
+				const noteFile = readeckIdMap.get(id);
+				if (noteFile) {
+					await this.app.vault.delete(noteFile);
+					new Notice(`Readeck importer: Deleted note for bookmark ${id}`);
+				} else {
+					new Notice(`Readeck importer: Could not find note for bookmark ${id}`);
+				}
+				// Delete the images folder
+				const imgsFolderPath = `${this.effectiveImagesFolder}/${id}`;
+				const imgsFolder = this.app.vault.getAbstractFileByPath(imgsFolderPath);
+				if (imgsFolder && imgsFolder instanceof TFolder) {
+					await this.app.vault.delete(imgsFolder, true);
+				}
 			}
 		}
 		
