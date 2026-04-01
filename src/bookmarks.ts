@@ -115,7 +115,7 @@ export class BookmarksService {
 				// Create bookmark folder
 				const bookmarkFolderPath = `${this.settings.folder}/${id}`;
 				await this.createFolderIfNotExists(id, bookmarkFolderPath);
-				const bookmarkHeader = this.generateBookmarkHeader(bookmark.json);
+				const bookmarkHeader = this.generateBookmarkHeader(id, bookmark.json);
 				const bookmarkContent = bookmarkHeader + (bookmark.text || '');
 				this.addBookmarkMD(id, bookmark.json.title, bookmarkContent, bookmark.annotations, bookmarkFolderPath);
 			}
@@ -217,8 +217,9 @@ export class BookmarksService {
 		return annotationsContent;
 	}
 
-	private generateBookmarkHeader(bookmark: Bookmark): string {
+	private generateBookmarkHeader(id: string, bookmark: Bookmark): string {
 		let header = `---\n`;
+		header += `readeck_id: "${id}"\n`;
 		if (bookmark.title) {
 			header += `title: "${bookmark.title.replace(/"/g, '\\"')}"\n`;
 		}
