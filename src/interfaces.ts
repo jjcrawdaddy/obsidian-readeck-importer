@@ -4,6 +4,7 @@ export interface ReadeckPluginSettings {
 	apiToken: string;
 	username: string,
 	folder: string;
+	imagesFolder: string;
 	lastSyncAt: string;
 	autoSyncOnStartup: boolean;
 	overwrite: boolean;
@@ -111,6 +112,7 @@ export const DEFAULT_SETTINGS: ReadeckPluginSettings = {
 	apiToken: "",
 	username: "",
 	folder: "Readeck",
+	imagesFolder: "",
 	lastSyncAt: "",
 	autoSyncOnStartup: true,
 	overwrite: false,
