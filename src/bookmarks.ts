@@ -29,7 +29,7 @@ export class BookmarksService {
 	}
 
 	private get effectiveImagesFolder(): string {
-		return this.settings.imagesFolder?.trim() || this.settings.folder;
+		return (this.settings.imagesFolder?.trim() || this.settings.folder).replace(/\/$/, '');
 	}
 
 	private async buildReadeckIdMap(): Promise<Map<string, TFile>> {
@@ -137,7 +137,7 @@ export class BookmarksService {
 				let content = bookmark.text || '';
 				if (bookmark.images.length > 0) {
 					const newImgPath = `${this.effectiveImagesFolder}/${id}/`;
-					content = Utils.updateImagePaths(content, './imgs/', newImgPath);
+					content = Utils.updateImagePaths(content, newImgPath);
 				}
 				const bookmarkHeader = this.generateBookmarkHeader(id, bookmark.json);
 				const bookmarkContent = bookmarkHeader + content;
@@ -225,7 +225,11 @@ export class BookmarksService {
 				new Notice(`Readeck importer: Note for ${bookmarkTitle} already exists`);
 			}
 		} else {
-			await this.app.vault.create(filePath, noteContent);
+			const existingAtPath = this.app.vault.getAbstractFileByPath(filePath);
+			const actualFilePath = existingAtPath
+				? `${this.settings.folder}/${safeTitle}-${bookmarkId}.md`
+				: filePath;
+			await this.app.vault.create(actualFilePath, noteContent);
 			new Notice(`Readeck importer: Creating note for ${bookmarkTitle}`);
 		}
 	}

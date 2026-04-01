@@ -38,7 +38,7 @@ export class Utils {
         });
     }
 
-    static updateImagePaths(text: string, oldPath: string, newPath: string) {
+    static updateImagePaths(text: string, newPath: string) {
         const imageRegex = /!\[.*?\]\(\.\/(.*?\.(?:png|jpg|jpeg|gif|svg|webp))\)/g;
 
         const updatedText = text.replace(imageRegex, (match, imageId) => {
