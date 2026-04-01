@@ -20,7 +20,9 @@ The Readeck Importer is a plugin for Obsidian that enables users to seamlessly i
 The plugin provides the following configurable options:
 - **API URL**: The base URL of the Readeck instance (without a trailing `/`).  
 - **Folder**: The folder for saving notes.  
+- **Images folder**: The folder for saving images. Defaults to the notes folder if left empty.  
 - **Overwrite**: If enabled, replaces an existing note with the new one. Warning: notes will be overwritten.
+- **Delete**: If enabled, deletes the local note when a bookmark is removed from Readeck.
 - **Mode**: Defines the content to be saved:  
   - **Text**: Save the text.  
   - **Text + Images**: Save text along with images.  
@@ -39,7 +41,7 @@ The plugin provides the following configurable options:
 If you wish to contribute to the plugin or customize it for your needs:
 
 1. Clone the repository and run `npm install` to install dependencies.
-2. Build the plugin using `npm run dev`.
+2. Build the plugin using `npm run build`.
 
 ## License
 
