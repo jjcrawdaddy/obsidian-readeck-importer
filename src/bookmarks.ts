@@ -134,8 +134,13 @@ export class BookmarksService {
 		for (const [id, bookmark] of bookmarksData.entries()) {
 			if (bookmark.text || bookmark.annotations.length > 0) {
 				const existingFile = readeckIdMap.get(id);
+				let content = bookmark.text || '';
+				if (bookmark.images.length > 0) {
+					const newImgPath = `${this.effectiveImagesFolder}/${id}/`;
+					content = Utils.updateImagePaths(content, './imgs/', newImgPath);
+				}
 				const bookmarkHeader = this.generateBookmarkHeader(id, bookmark.json);
-				const bookmarkContent = bookmarkHeader + (bookmark.text || '');
+				const bookmarkContent = bookmarkHeader + content;
 				await this.addBookmarkMD(id, bookmark.json.title, bookmarkContent, bookmark.annotations, existingFile);
 			}
 
