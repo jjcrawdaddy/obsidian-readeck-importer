@@ -39,14 +39,11 @@ export class Utils {
     }
 
     static updateImagePaths(text: string, newPath: string) {
-        const imageRegex = /!\[.*?\]\(\.\/(.*?\.(?:png|jpg|jpeg|gif|svg|webp))\)/g;
+        const imageRegex = /!\[(.*?)\]\((?:\.\/)?imgs\/(.*?\.(?:png|jpg|jpeg|gif|svg|webp))\)/g;
 
-        const updatedText = text.replace(imageRegex, (match, imageId) => {
-            const filename = imageId.split('/').pop()!;
-            return match.replace(`./${imageId}`, `${newPath}${filename}`);
+        return text.replace(imageRegex, (_, alt, filename) => {
+            return `![${alt}](${newPath}${filename})`;
         });
-
-        return updatedText;
     }
 
 	static parseDateStrToISO(date: string): string | undefined {
