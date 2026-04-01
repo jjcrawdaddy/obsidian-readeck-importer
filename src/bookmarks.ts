@@ -28,6 +28,22 @@ export class BookmarksService {
 		return this.getSettings();
 	}
 
+	private async buildReadeckIdMap(): Promise<Map<string, TFile>> {
+		const map = new Map<string, TFile>();
+		const folder = this.app.vault.getAbstractFileByPath(this.settings.folder);
+		if (!folder || !(folder instanceof TFolder)) return map;
+
+		for (const child of folder.children) {
+			if (!(child instanceof TFile) || child.extension !== 'md') continue;
+			const cache = this.app.metadataCache.getFileCache(child);
+			const readeckId = cache?.frontmatter?.readeck_id;
+			if (readeckId) {
+				map.set(String(readeckId), child);
+			}
+		}
+		return map;
+	}
+
 	/*
 	* Fetch Readeck data and process bookmarks
 	* 1. Get bookmark status since last sync
