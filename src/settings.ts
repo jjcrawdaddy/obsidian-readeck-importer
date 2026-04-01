@@ -135,6 +135,17 @@ export class RDSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 
+		new Setting(containerEl)
+			.setName('Images folder')
+			.setDesc('Folder where images are saved. Defaults to the notes folder if left empty.')
+			.addText(text => text
+				.setPlaceholder('e.g. References/Images')
+				.setValue(this.plugin.settings.imagesFolder)
+				.onChange(async (value) => {
+					this.plugin.settings.imagesFolder = value;
+					await this.plugin.saveSettings();
+				}));
+
 		let lastSyncText: TextComponent;
 		let lastSyncButton: ButtonComponent;
 		new Setting(containerEl)
